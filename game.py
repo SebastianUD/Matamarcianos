@@ -19,6 +19,7 @@ class Game:
 
         
     def checkKeys(self):
+        #Comprobar las teclas pulsadas
         keys=pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]: self.ship.direction="RIGHT" 
         elif keys[pygame.K_LEFT]: self.ship.direction="LEFT"
