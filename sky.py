@@ -1,7 +1,7 @@
 import random
 
 class Sky:
-    def __init__(self,width,height, quantity):
+    def __init__(self,width,height,quantity):
         self.stars=[]
         self.width=width
         self.height=height

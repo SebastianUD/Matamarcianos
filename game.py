@@ -1,10 +1,12 @@
 from sky import Sky
+from ship import Ship
 import random
 import pygame
 
 class Game:
     
     def __init__(self):
+        self.ship=Ship()
         self.width=800
         self.height=800
         self.mySky=Sky(self.width, self.height, 1600)
@@ -12,9 +14,20 @@ class Game:
         self.clock=pygame.time.Clock()
         self.fps=60
         #Cargar la hoja de imágenes
-        self.sprites= pygame.image.load("sprites.png")
+        self.sprites= pygame.image.load("Matamarcianos/sprites.png")
         self.shipsprite=pygame.Surface((64,64)).convert()
         self.shipsprite.blit(self.sprites,(0,0),(250,436,64,64))
+
+        
+    def checkKeys(self):
+        keys=pygame.key.get_pressed()
+        if keys[pygame.K_RIGHT]: self.ship.direction="RIGHT"
+        elif keys[pygame.K_LEFT]: self.ship.direction="LEFT"
+        else: self.ship.direction="STOP"
+        #definir los limites de la pantalla
+        if self.ship.x > self.width-64: self.ship.x=self.width-64
+        if self.ship.x < 8: self.ship.x=8
+        
 
     def run (self):
         pygame.init()
@@ -34,10 +47,12 @@ class Game:
                 pygame.draw.circle(self.screen, (r,g,b), star, 1)
             
             self.mySky.move()
-            x=self.width/2
-            y=self.height/2
+            self.ship.move()
+            x=self.ship.x
+            y=self.ship.y
             self.screen.blit(self.shipsprite, (x,y))
             self.clock.tick(self.fps)
+            self.checkKeys()
             pygame.display.flip()
 
 #Siempre hacer un objeto de la clase para que esta haga algo
