@@ -6,7 +6,7 @@ class Sky:
         self.width=width
         self.height=height
         
-        for i in range(quantity):
+        for i in range(quantity): 
             x=random.randint(0,height)
             y=random.randint(0,height)
             self.stars.append([x,y])

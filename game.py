@@ -18,7 +18,6 @@ class Game:
         self.shipsprite=pygame.Surface((64,64)).convert() #Crear una superficie para la nave
         self.shipsprite.blit(self.sprites,(0,0),(250,436,64,64)) #Cortar la nave de la hoja de imágenes
         self.shipsprite.set_colorkey((0,0,0)) #Quitar el fondo de la nave
-        self.rect=self.shipsprite.get_rect() #Obtener las coordenadas de la nave
         self.bulletsprite=pygame.image.load("Matamarcianos/bullet.png").convert() #Dibujar la balla
         self.bulletsprite.set_colorkey((0,0,0)) #Quitar el fondo de la bala
         
@@ -28,13 +27,13 @@ class Game:
         keys=pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]: self.ship.direction="RIGHT" 
         elif keys[pygame.K_LEFT]: self.ship.direction="LEFT"
-        elif keys[pygame.K_SPACE]: self.bullet.condition="DISPARADO"
         else:
-            self.ship.direction="STOP"
-    
-    def newbullet(self):
-        self.bullet.ybullet=self.ship.y
-        self.bullet.condition=" "
+            self.ship.direction="STOP" 
+            
+        if keys[pygame.K_SPACE]:
+            self.bullet.condition="DISPARADO"
+            
+            
 
     def run (self):
         pygame.init()
@@ -47,30 +46,29 @@ class Game:
                 if event.type==pygame.QUIT:
                     pygame.quit()
 
+            #Dibujar las estrellas
             for star in self.mySky.stars:
                 r=random.randint(0,255)
                 g=random.randint(0,255)
                 b=random.randint(0,255)
                 pygame.draw.circle(self.screen, (r,g,b), star, 1)
+            
+            #Dibujar las balas
+            for bullet in self.bullet.bullets:
+                self.screen.blit(self.bulletsprite,(bullet[0],bullet[1]))
                 
             #Definir los limites de la pantalla
             if self.ship.x > self.width-64: self.ship.x=self.width-64 #Limite derecho
             if self.ship.x < 8: self.ship.x=8 #Limite izquierdo
             
-            #Hacer que la bala reaparezca cuando se sale de la pantalla
-            if self.bullet.ybullet < -30:
-                self.bullet.ybullet=self.ship.y
-                self.bullet.condition=" "
-
             self.mySky.move() #Mover las estrellas
             self.ship.move() #Mover la nave
             x=self.ship.x #Posicion x de la nave
             y=self.ship.y #Posicion y de la nave
-            self.screen.blit(self.bulletsprite,(x+6,self.bullet.ybullet+18)) #Dibujar la bala
             self.screen.blit(self.shipsprite, (x,y)) #Dibujar la nave
             self.clock.tick(self.fps) #Controlar los fps
             self.checkKeys() #Comprobar las teclas
-            self.bullet.shoot() #Disparar la bala
+            self.bullet.shoot(self.ship.x+5,self.ship.y-15) #Disparar
             pygame.display.flip() #Actualizar la pantalla
 
 
