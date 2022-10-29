@@ -30,10 +30,6 @@ class Game:
         else:
             self.ship.direction="STOP" 
             
-        if keys[pygame.K_SPACE]:
-            self.bullet.condition="DISPARADO"
-            
-            
 
     def run (self):
         pygame.init()
@@ -43,8 +39,11 @@ class Game:
             self.screen.fill((0,0,0))
             
             for event in pygame.event.get():
-                if event.type==pygame.QUIT:
+                if event.type==pygame.QUIT:#Cerrar si se pulsa la X de la ventana
                     pygame.quit()
+                if event.type==pygame.KEYDOWN: #Comprobar si se pulsa una tecla
+                    if event.key==pygame.K_SPACE: #Comprobar si se pulsa la tecla espacio
+                        self.bullet.condition="DISPARADO"
 
             #Dibujar las estrellas
             for star in self.mySky.stars:
