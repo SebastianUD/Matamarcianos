@@ -6,10 +6,10 @@ import pygame, random
 class Game:
     
     def __init__(self):
-        self.ship=Ship() #Crear la nave
-        self.bullet=Bullet() #Crear la bala
         self.width=800 #Ancho de la pantalla
         self.height=800 #Alto de la pantalla
+        self.ship=Ship((self.width/2)-32,self.height-90) #Crear la nave
+        self.bullet=Bullet() #Crear la bala
         self.mySky=Sky(self.width, self.height, 1600) #Crear el cielo
         self.screen=pygame.display.set_mode((self.width,self.height)) #Crear la pantalla
         self.clock=pygame.time.Clock() #Crear el reloj para controlar los fps
@@ -18,10 +18,10 @@ class Game:
         self.shipsprite=pygame.Surface((64,64)).convert() #Crear una superficie para la nave
         self.shipsprite.blit(self.sprites,(0,0),(250,436,64,64)) #Cortar la nave de la hoja de imágenes
         self.shipsprite.set_colorkey((0,0,0)) #Quitar el fondo de la nave
-        self.bulletsprite=pygame.image.load("Matamarcianos/bullet.png").convert() #Dibujar la balla
+        self.bulletsprite=pygame.image.load("Matamarcianos/bullet.png").convert() #Cargar la imagen de la bala
         self.bulletsprite.set_colorkey((0,0,0)) #Quitar el fondo de la bala
-        
-        
+
+
     def checkKeys(self):
         #Comprobar las teclas pulsadas
         keys=pygame.key.get_pressed()
@@ -29,7 +29,7 @@ class Game:
         elif keys[pygame.K_LEFT]: self.ship.direction="LEFT"
         else:
             self.ship.direction="STOP" 
-            
+
 
     def run (self):
         pygame.init()
@@ -41,8 +41,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:#Cerrar si se pulsa la X de la ventana
                     pygame.quit()
-                if event.type==pygame.KEYDOWN: #Comprobar si se pulsa una tecla
-                    if event.key==pygame.K_SPACE: #Comprobar si se pulsa la tecla espacio
+                if event.type==pygame.KEYDOWN: #Comprobar si se pulsa la tecla una vez
+                    if event.key==pygame.K_SPACE: 
                         self.bullet.condition="DISPARADO"
 
             #Dibujar las estrellas
@@ -61,13 +61,13 @@ class Game:
             if self.ship.x < 8: self.ship.x=8 #Limite izquierdo
             
             self.mySky.move() #Mover las estrellas
-            self.ship.move() #Mover la nave
             x=self.ship.x #Posicion x de la nave
             y=self.ship.y #Posicion y de la nave
             self.screen.blit(self.shipsprite, (x,y)) #Dibujar la nave
+            self.bullet.shoot(x+5,y-15) #Disparar
+            self.ship.move() #Mover la nave
             self.clock.tick(self.fps) #Controlar los fps
             self.checkKeys() #Comprobar las teclas
-            self.bullet.shoot(self.ship.x+5,self.ship.y-15) #Disparar
             pygame.display.flip() #Actualizar la pantalla
 
 

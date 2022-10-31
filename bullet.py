@@ -11,7 +11,7 @@ class Bullet:
             
         for bullet in self.bullets: #Mover la bala
             bullet[1]-=10
-            if bullet[1] < -20: 
+            if bullet[1] <= -20: 
                 self.bullets.remove(bullet) #Eliminar la bala si sale de la pantalla           
         
 

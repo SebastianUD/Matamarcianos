@@ -1,8 +1,8 @@
 class Ship:
-    def __init__(self):
+    def __init__(self,x,y):
         self.direction = "STOP" #Dirección de la nave
-        self.x=368 #Posición x de la nave
-        self.y=710 #Posición y de la nave
+        self.x=x #Posición x de la nave
+        self.y=y #Posición y de la nave
     
     def move(self):
         if self.direction == "LEFT": #Disminuir en 5 si la nave se mueve a la izquierda
